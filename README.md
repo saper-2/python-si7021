@@ -21,10 +21,10 @@ If you read datasheet of Si7021 and paid more attention to Heater control regist
 It took me a a bit of time to find out a reasonable coefficeint for calculating more-or-less precise current.  
 
 Screenshot of my excel :) :
-(img/si7021-heater-current-coeff-calcs.png)
+![calc screenshot](img/si7021-heater-current-coeff-calcs.png)
 
 And the graph:
-(img/si7021-heater-current-graph.png)
+![Graph of heater current](img/si7021-heater-current-graph.png)
 
 # Files
 ## si7021.py
