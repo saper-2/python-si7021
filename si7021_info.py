@@ -41,34 +41,5 @@ else:
 		print("  Lengths returned: {0} {1} {2}".format(sn["sn"][0], sn["sn"][1], sn["sn"][2]))
 
 print_config(si.ReadSettings())
-print("----------------------------")
-print("Testing functions...")
-print("Set heater ~57.8mA (0x09)...", end=" ")
-print(si.SetHeater(0x09))
-print_config(si.ReadSettings())
-print("---------")
-print("Set sampling RH=11bit Temp=11bit (0b1xxxxxx1)... {0}".format(si.SetSampling(0x03)))
-print_config(si.ReadSettings())
-print("---------")
-print("Reset...")
-si.Reset()
-print_config(si.ReadSettings())
-print("+++++++++++++")
-print("Measuring RH... {0:6.4f}%".format(si.MeasHumi()/100.0))
-print("Temparature of last RH sampling... {0:6.4f}degC".format(si.GetLastMeasHumiTemp()/100.0))
-print("Measuring Temperature... {0:6.4f}degC".format(si.MeasTemp()/100.0))
-
-print("Reading RH & Temp. in loop until script will be terminated...")
-
-
-try:
-	while True:
-		rht = si.MeasHumiTemp()
-		rh = rht["humi"]/100.0
-		tp = rht["temp"]/100.0
-		print("Read RH={0:4.2f}% TEMP={1:4.2f}degC".format(rh,tp))
-		time.sleep(1.0)
-except KeyboardInterrupt:
-	pass
 
 # end.

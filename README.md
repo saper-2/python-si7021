@@ -21,10 +21,10 @@ If you read datasheet of Si7021 and paid more attention to Heater control regist
 It took me a a bit of time to find out a reasonable coefficeint for calculating more-or-less precise current.  
 
 Screenshot of my excel :) :
-[img/si7021-heater-current-coeff-calcs.png]
+(img/si7021-heater-current-coeff-calcs.png)
 
 And the graph:
-[img/si7021-heater-current-graph.png]
+(img/si7021-heater-current-graph.png)
 
 # Files
 ## si7021.py
@@ -32,6 +32,9 @@ Main file with class Si7021
 
 ## si7021_test.py
 Test code for Si7021 class and example how to use it :)
+
+## si7021_info.py
+Print info about chip and exit.
 
 ## si7021_test_no_class.py
 No class version of Si7021 routines - this was my first test zone :)

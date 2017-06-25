@@ -27,6 +27,11 @@ License:
 import time
 import pigpio
 
+def byte_array_to_string(ar):
+	s = ""
+	for a in ar:
+		s += "{:02X} ".format(a)
+	return s
 
 
 class Si7021:
@@ -88,13 +93,13 @@ class Si7021:
 		Returns:
 			Byte - crc value updated with 'b' byte
 		"""
-		for i in range(8):
+		for k in range(8):
 			if ( ((b^crc) & 0x80) == 0x80 ):
 				crc = crc<<1
 				crc = crc^0x31
 			else:
 				crc = crc<<1
-				b = b << 1
+			b = b << 1
 		crc = crc & 0xFF
 		return crc
 	
@@ -120,16 +125,17 @@ class Si7021:
 		dev = self.pio.i2c_open(self.piBus, self.siAddr)
 		# self.ReadMode == SI7021_READ_MODE_NO_HOLD
 		(cnt1, dta1) = self.pio.i2c_zip(dev, [2, 4, self.siAddr, 7, 2, self.SI7021_CMD_READ_EID1_1, self.SI7021_CMD_READ_EID1_2, 6, 8, 0])
+		
 		(cnt2, dta2) = self.pio.i2c_zip(dev, [2, 4, self.siAddr, 7, 2, self.SI7021_CMD_READ_EID2_1, self.SI7021_CMD_READ_EID2_2, 6, 6, 0])
 		(cnt3, dta3) = self.pio.i2c_zip(dev, [2, 4, self.siAddr, 7, 2, self.SI7021_CMD_READ_FW_1,   self.SI7021_CMD_READ_FW_2, 6, 1, 0])
 		self.pio.i2c_close(dev)
 		#print("SN:0:Count={0} RetData={1}".format(cnt1,byte_array_to_string(dta1)))
-		#print("SN:1:Count={0} RetData={1}".format(cnt1,byte_array_to_string(dta2)))
+		#print("SN:1:Count={0} RetData={1}".format(cnt2,byte_array_to_string(dta2)))
 		#print("FW:0:Count={0} RetData={1}".format(cnt3,byte_array_to_string(dta3)))
 		if (cnt1 == 8 and cnt2 == 6 and cnt3 == 1):
 			# check CRC of 1st data
 			#print("Checking CRC8... ")
-			crc=0 #init seed
+			crc=0x00 #init seed
 			ok=0
 			for i in range(4):
 				b = dta1[i*2]
@@ -140,7 +146,7 @@ class Si7021:
 					ok=1
 					#print("  Data1[{0}]=0x{1:02X} CRC_GOT=0x{2:02X} CRC_CALC={3:02X} MATCH={4}".format(i*2, b, bcrc, crc, (bcrc==crc)))
 			# check CRC of 2nd data
-			crc=0 # init seed
+			crc=0x00 # init seed
 			for i in range(2):
 				b = dta2[(i*3)+0]
 				c = dta2[(i*3)+1]
@@ -222,7 +228,7 @@ class Si7021:
 		dev = self.pio.i2c_open(self.piBus, self.siAddr)
 		self.pio.i2c_write_byte(dev, self.SI7021_CMD_RESET); # CMD reset
 		self.pio.i2c_close(dev)
-		time.sleep(0.03) # wait 30ms (min 15ms)
+		time.sleep(0.1) # wait 100ms (min 15ms)
 		return
 	
 	def ReadSettings(self):

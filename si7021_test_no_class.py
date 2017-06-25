@@ -282,8 +282,8 @@ print("Reading S/N & F/W...", end=' ')
 sn = si7021_read_sn()
 if (sn['ok'] == 1):
 	print(" Success.")
-	print("   Device name: {0:#02X} ({1})".format(sn['device'], sn['device_str']))
-	print("   Firmware version: {0:#02X} (v{1})".format(sn['fw'], sn['fw_str']))
+	print("   Device name: 0x{0:02X} ({1})".format(sn['device'], sn['device_str']))
+	print("   Firmware version: 0x{0:02X} (v{1})".format(sn['fw'], sn['fw_str']))
 	print("   Serial number: {0}".format(byte_array_to_string(sn['sn'])))
 else:
 	print("Errors occured.")
